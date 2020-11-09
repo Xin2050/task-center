@@ -8,11 +8,11 @@ for now we start from test data just a small group
 */
 
 ///init server group
-import {IClient, TaskClient} from "./Client/Client";
+import {TaskClient} from "./Client/Client";
 import {TaskServer} from './server/Server'
-import {ClientState, IServerConfig, ISingleRunner, ServerType} from "./interfaces/";
-import os from "os";
-import {SingleRun} from "./SingleRun";
+import {IServerConfig, SendDataCallbackType} from "./interfaces/";
+import colors from 'colors';
+import {Socket} from "net";
 
 
 export const ServerConfig: IServerConfig = {
@@ -25,44 +25,60 @@ export const ServerConfig: IServerConfig = {
 
 ///init data
 
-//get MySelf a Server
-const singleRunner:ISingleRunner = SingleRun.getInstance();
-
-const {serverDefinition,instance} = singleRunner;
+// //get MySelf a Server
+// const singleRunner:ISingleRunner = SingleRun.getInstance();
+// //
+// const {serverDefinition,instance} = singleRunner;
 
 
 
 //init start server and clients
 
+process.on("exit",(code)=> {
+    console.log("Process exit on code:",code);
+})
 
 
-
-/*
-const server = new TaskServer(3000)
+const server = new TaskServer(3000);
 server.start();
+const c1 = new TaskClient(3000,"10.1.0.7");
+c1.start()
+setInterval(()=>{
+    c1.send({data:{name:'c1',dt:new Date()}})
+},800);
+const c2 = new TaskClient(3000,"10.1.0.7");
+c2.start()
+setInterval(()=>{
+    c2.send({data:{name:'c2',dt:new Date()}})
+},700);
+const c3 = new TaskClient(3000,"10.1.0.7");
+c3.start()
+setInterval(()=>{
+    c3.send({data:{name:'c3',dt:new Date()}})
+},600);
 
-const dataCallback = (data:any)=>{
-    console.log(data);
-}
 
 
-let clients:TaskClient[]=new Array(5);
-for(let i=0;i<5;i++){
-    const someDummyData = {
-        data:"sys",
-        id :i,
-        name:"xin li times" + i,
-        add:"2050 ssxie cre" + Math.random()
-    }
-    clients[i] = new TaskClient(3000,"10.1.0.7",dataCallback);
-    clients[i].connect().then((resolve:ClientState)=>{
-        console.log(resolve);
-        clients[i].send(someDummyData);
-    }).catch((error) => {
-        console.log(error);
-    })
-}
-*/
+const server1 = new TaskServer(4000);
+server1.start();
+
+const cc1 = new TaskClient(4000,"10.1.0.7");
+cc1.start()
+setInterval(()=>{
+    cc1.send({data:{name:'cc1',dt:new Date()}})
+},500);
+const cc2 = new TaskClient(4000,"10.1.0.7");
+cc2.start()
+setInterval(()=>{
+    cc2.send({data:{name:'cc2',dt:new Date()}})
+},400);
+const cc3 = new TaskClient(4000,"10.1.0.7");
+cc3.start()
+setInterval(()=>{
+    cc3.send({data:{name:'cc3',dt:new Date()}})
+},300);
+
+
 
 
 

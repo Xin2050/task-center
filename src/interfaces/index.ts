@@ -1,6 +1,7 @@
 import {TaskClient} from "../Client/Client";
 import {TaskServer} from "../server/Server";
 import {MainServer} from "../server/MainServer";
+import {Socket} from "net";
 
 export enum TaskStatus {
     Prepare,
@@ -15,11 +16,12 @@ export enum ServerType{
     Server="Server",
     Client="Client"
 }
-export enum ClientState{
+export enum ServerState{
     Busy="Busy",
     Available="Available",
     Closed="Closed",
-    Lost="Lost"
+    Lost="Lost",
+    Error="Error",
 }
 export interface ServerAddress {
     readonly ip: string;
@@ -39,17 +41,23 @@ export interface ServerDefinition{
     address:string;
     port:number;
 }
+export type SendDataCallbackType= (socket:Socket)=>(data: any) => void;
 
-export interface IRunnerAble{
+
+export interface IRunAble{
+
+    setStartCallBack(callback: () => void):void;
+    setStopCallBack(callback: () => void):void;
+    setConnectedCallBack(callback: () => void):void;
     stop():void;
     start():void;
-    afterStart(callback:(data:any)=>void):void;
-    setDataCallBack(dataCallBack?:(data:any)=>void):void;
+    ///send(data:Buffer|string):void;
+
 }
 
 export interface IClient {
     address: string;
-    state:ClientState
+    state:ServerState
 }
 
 export interface ITodoItem {
