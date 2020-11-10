@@ -31,21 +31,26 @@ export class SingleRun{
         if(!SingleRun.instance){
             //1. find who I am
             const serverDefinition = WhoAmI();
+
             let instance;
             switch (serverDefinition.type){
                 case ServerType.Server:
                     instance = new TaskServer(serverDefinition.port);
+                    break;
                 case ServerType.MainServer:
                     instance = new MainServer(serverDefinition.port);
+                    break;
                 case ServerType.Client:
                     //should sent a Server to This client
                     instance = new TaskClient(SingleRun.pointedServer.port,
                         SingleRun.pointedServer.ip)
+                    break;
             }
             SingleRun.instance = {
                 serverDefinition,instance
             }
         }
+
         return SingleRun.instance;
     }
 }
@@ -59,6 +64,7 @@ function WhoAmI():ServerDefinition{
             addressList.push(o.address);
         })
     })
+    let sd:ServerDefinition|null = null;
 
     if(addressList.includes(ServerConfig.mainServer.ip)){
         return {
@@ -68,17 +74,22 @@ function WhoAmI():ServerDefinition{
         }
     }
     ServerConfig.servers.forEach((s) => {
+
         if(addressList.includes(s.ip)){
-            return {
+            sd =  {
                 type:ServerType.Server,
                 port:s.port,
                 address:s.ip
             }
         }
     })
-    return {
+    if(sd){
+        return sd;
+    }
+    sd = {
         type:ServerType.Client,
         address:"",
         port:0
     }
+    return sd;
 }

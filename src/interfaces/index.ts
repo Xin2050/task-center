@@ -2,27 +2,25 @@ import {TaskClient} from "../Client/Client";
 import {TaskServer} from "../server/Server";
 import {MainServer} from "../server/MainServer";
 import {Socket} from "net";
+import {DetailTaskActionType} from "../task/TaskData";
 
-export enum TaskStatus {
-    Prepare,
-    Dispatched,
-    Done,
-    Error,
-    Retry,
-    Running
-}
 export enum ServerType{
     MainServer = "MainServer",
     Server="Server",
     Client="Client"
 }
 export enum ServerState{
-    Busy="Busy",
+
     Available="Available",
+    Preparing ="Preparing",
+    ReadyForExecute = "ReadyForExecute",
+    Executing = "Executing",
+    Done = "Done",
     Closed="Closed",
     Lost="Lost",
-    Error="Error",
+    Error="Error"
 }
+
 export interface ServerAddress {
     readonly ip: string;
     readonly port: number
@@ -60,20 +58,26 @@ export interface IClient {
     state:ServerState
 }
 
-export interface ITodoItem {
-    id: number;
-    status: TaskStatus;
-    updateAT:Date;
-    runAt:IClient
+export enum ClientActionType{
+    CheckServerStatus="CheckServerStatus",
+    RequireAction = "RequireAction",
+    ReturnResult = "ReturnResult",
+    NOTHING= "CNOTHING",
+    Processing = "Processing",
 }
-
-
-export type TodoListType = ITodoItem[];
-
-export interface ITask{
-    start():void;
-    getStatue():TaskStatus
+export enum ServerActionType{
+    ExecuteAction="ExecuteAction",
+    ResultReceived = "ResultReceived",
+    ResponseStatusCheck = "ResponseStatusCheck",
+    NOTHING= "SNOTHING"
 }
-
-
+export interface IPayload{
+    action:DetailTaskActionType,
+    data:any
+}
+export interface IMessage{
+    type:ClientActionType|ServerActionType;
+    payload: IPayload,
+    sendBack:boolean
+}
 
