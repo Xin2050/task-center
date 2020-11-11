@@ -37,9 +37,9 @@ class MacBook extends Machine{
         console.log("I can run MacOS");
     }
 }
-const mac = new MacBook("MyBook");
+const mac = new MacBook("Mac Book Pro 2020 13'");
 console.log(mac.name);
-mac.addPort("usb").addPort("3.5").addPort("power");
+mac.addPort("lighting").addPort("3.5").addPort("power");
 mac.printAllPorts();
 mac.turnOn();
 mac.print((data)=>{

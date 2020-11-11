@@ -1,11 +1,10 @@
 
 import faker from 'faker';
-import {ITaskResult} from "../interfaces/tasks";
 import TestTask from "../test/TestTask";
-import {TaskDataManager} from "./TaskDataManager";
+
 
 /*
-load your data. set your onw data format
+load your data. set your own data interface
  */
 
 export interface IDataFormat {
@@ -18,6 +17,8 @@ export interface IDataFormat {
 
 
 class TaskData {
+    //todo you can expend this class to pre-processing you data or do something after
+    //like upload to server or download from server
 
     static getData() :Map<number,IDataFormat> {
         const TestData = new Map<number,IDataFormat> ();
@@ -35,10 +36,14 @@ class TaskData {
     }
 
 }
-
 export const enum DetailTaskActionType{
-    Nothing="Nothing",//this is for do nothing, do not change
-    First="First", //this is hard code , do not change, below will be your action type
+    //this is hard code , do not change, the system need it
+    Nothing="Nothing",
+    First="First",
+}
+
+export const enum DetailTaskActionType {
+    // your task data in there , you can chang it
     Login="Login",
     MainTask ="MainTask",
     SecondTask="SecondTask",

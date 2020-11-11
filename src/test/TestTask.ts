@@ -62,7 +62,8 @@ class TestTask {
                         orderID:faker.random.number()
                     }
                 });
-            }, 1000)
+            }, 1000);
+            //todo  if error your can try it again or return error throw reject() function.
         })
     }
 

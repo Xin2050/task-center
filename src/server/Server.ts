@@ -46,6 +46,7 @@ export class TaskServer extends AServer {
         switch (type) {
             case ClientActionType.CheckServerStatus:
                 return this.getResponseServerStatusCheckAction();
+
             case ClientActionType.RequireAction:
 
                 return this.getNextAction(payload);

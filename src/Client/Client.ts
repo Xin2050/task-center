@@ -71,6 +71,17 @@ export class TaskClient extends AClient{
                         },
                         sendBack:true
                     })
+                }).catch((reject:any)=>{
+                    //todo task action something happens, you should update you data from dataManager
+                    // you have to make sure there is a isNeedUpdate = true in your reject
+                    this.send({
+                        type:ClientActionType.ReturnResult,
+                        payload:{
+                            action:reject.action,
+                            data:reject
+                        },
+                        sendBack:false
+                    })
                 });
                 return NOTHING;
 
